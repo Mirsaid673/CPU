@@ -84,13 +84,13 @@ int main(int argc, char **argv)
             }
             else
             {
-                labels.emplace(lable, instruction_addr + 1);
+                uint32_t addr = instruction_addr + 1;
+                labels.emplace(lable, addr);
                 for (auto comand = not_resolved_comands.begin(); comand != not_resolved_comands.end(); comand++)
                 {
-                    const auto is_label = labels.find(comand->lable);
-                    if (is_label != labels.end())
+                    if(comand->lable == lable)
                     {
-                        comand->instruction.setLimm(is_label->second - comand->index);
+                        comand->instruction.setLimm(addr - comand->index);
                         decoded_instructions[comand->index] = comand->instruction.getInstr();
 
                         comand = not_resolved_comands.erase(comand);
